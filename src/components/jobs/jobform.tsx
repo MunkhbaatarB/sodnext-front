@@ -2,7 +2,7 @@ import { Job } from "@/types/job";
 import Image from "next/image";
 import Link from "next/link";
 
-const SingleJob = ({ job }: { job: Job }) => {
+const JobForm = ({ job }: { job: Job }) => {
   const { title, image, paragraph, author, tags, publishDate } = job;
   return (
     <>
@@ -29,7 +29,7 @@ const SingleJob = ({ job }: { job: Job }) => {
             {paragraph}
           </p>
           <div className="flex items-center">
-            {/* <div className="mr-5 flex items-center border-r border-body-color border-opacity-10 pr-5 dark:border-white dark:border-opacity-10 xl:mr-3 xl:pr-3 2xl:mr-5 2xl:pr-5">
+            <div className="mr-5 flex items-center border-r border-body-color border-opacity-10 pr-5 dark:border-white dark:border-opacity-10 xl:mr-3 xl:pr-3 2xl:mr-5 2xl:pr-5">
               <div className="mr-4">
                 <div className="relative h-10 w-10 overflow-hidden rounded-full">
                   <Image src={author.image} alt="author" fill />
@@ -41,7 +41,7 @@ const SingleJob = ({ job }: { job: Job }) => {
                 </h4>
                 <p className="text-xs text-body-color">{author.designation}</p>
               </div>
-            </div> */}
+            </div>
             <div className="inline-block">
               <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
                 Date
@@ -55,4 +55,4 @@ const SingleJob = ({ job }: { job: Job }) => {
   );
 };
 
-export default SingleJob;
+export default JobForm;

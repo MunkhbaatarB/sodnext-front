@@ -14,11 +14,11 @@ const jobsdata: Job[] = [
       designation: "Graphic Designer",
     },
     tags: ["Accountant"],
-    publishDate: "2025",
+    publishDate: "2025-10-25",
   },
   {
     id: 2,
-    title: "9 simple ways to improve your design skills",
+    title: "Тооцооны нягтлан бодогч",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
     image: "/images/blog/blog-02.jpg",
@@ -28,11 +28,11 @@ const jobsdata: Job[] = [
       designation: "Content Writer",
     },
     tags: ["computer"],
-    publishDate: "2025",
+    publishDate: "2025-10-25",
   },
   {
     id: 3,
-    title: "Tips to quickly improve your coding speed.",
+    title: "Тооцооны нягтлан бодогч",
     paragraph:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
     image: "/images/blog/blog-03.jpg",
@@ -42,7 +42,7 @@ const jobsdata: Job[] = [
       designation: "Graphic Designer",
     },
     tags: ["design"],
-    publishDate: "2025",
+    publishDate: "2025-10-25",
   },
 ];
 export default jobsdata;

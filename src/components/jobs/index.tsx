@@ -10,18 +10,51 @@ const Jobs = () => {
       title: "Software Engineer",
       location: "San Francisco, CA",
       type: "Full-Time",
+
+      paragraph:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
+      image: "/images/blog/blog-01.jpg",
+      author: {
+        name: "Samuyl Joshi",
+        image: "/images/blog/author-01.png",
+        designation: "Graphic Designer",
+      },
+      tags: ["creative"],
+      publishDate: "2025",
     },
     {
       id: 2,
-      title: "UI/UX Designer",
-      location: "Remote",
-      type: "Contract",
+      title: "Software Engineer",
+      location: "San Francisco, CA",
+      type: "Full-Time",
+
+      paragraph:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
+      image: "/images/blog/blog-01.jpg",
+      author: {
+        name: "Samuyl Joshi",
+        image: "/images/blog/author-01.png",
+        designation: "Graphic Designer",
+      },
+      tags: ["creative"],
+      publishDate: "2025",
     },
     {
       id: 3,
-      title: "Product Manager",
-      location: "New York, NY",
+      title: "Software Engineer",
+      location: "San Francisco, CA",
       type: "Full-Time",
+
+      paragraph:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet dictum neque, laoreet dolor.",
+      image: "/images/blog/blog-01.jpg",
+      author: {
+        name: "Samuyl Joshi",
+        image: "/images/blog/author-01.png",
+        designation: "Graphic Designer",
+      },
+      tags: ["creative"],
+      publishDate: "2025",
     },
   ];
 

@@ -1,5 +1,6 @@
 import SharePost from "@/components/Blog/SharePost";
 import TagButton from "@/components/Blog/TagButton";
+import Link from "next/link";
 import Image from "next/image";
 
 import { Metadata } from "next";
@@ -19,11 +20,10 @@ const BlogDetailsPage = () => {
             <div className="w-full px-4 lg:w-8/12">
               <div>
                 <h2 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-                  10 amazing sites to download stock photos & digital assets for
-                  free
+                  Тооцооны нягтлан бодогч
                 </h2>
                 <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10">
-                  <div className="flex flex-wrap items-center">
+                  {/* <div className="flex flex-wrap items-center">
                     <div className="mb-5 mr-10 flex items-center">
                       <div className="mr-4">
                         <div className="relative h-10 w-10 overflow-hidden rounded-full">
@@ -100,15 +100,15 @@ const BlogDetailsPage = () => {
                     >
                       Design
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 <div>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                  {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     Duis aute irure dolor in reprehenderit in voluptate velit
                     esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
                     occaecat cupidatat.
-                  </p>
-                  <div className="mb-10 w-full overflow-hidden rounded">
+                  </p> */}
+                  {/* <div className="mb-10 w-full overflow-hidden rounded">
                     <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                       <Image
                         src="/images/blog/blog-details-02.jpg"
@@ -117,8 +117,95 @@ const BlogDetailsPage = () => {
                         className="object-cover object-center"
                       />
                     </div>
-                  </div>
-                  <p className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                  </div> */}
+                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                    Гүйцэтгэх үндсэн үүрэг{" "}
+                  </h3>
+                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    Үйлдвэрийн өдөр тутмын үйл ажиллагааг төлөвлөх, зохион
+                    байгуулах, хяналт тавих Үйлдвэрлэлийн төлөвлөгөө, норм
+                    нормчилол, чанар стандартын хэрэгжилтийг хангах Хөдөлмөр
+                    аюулгүй байдал, эрүүл ахуйн шаардлагыг мөрдүүлж ажиллах
+                    Бүтээмжийг нэмэгдүүлэх, зардлыг хянах, үр ашигтай үйл
+                    ажиллагааг бий болгох Ажилтнуудыг удирдан чиглүүлэх, сургалт
+                    хөгжилд анхаарах
+                  </p>
+
+                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                    Ажлын байранд тавигдах шаардлага
+                  </h3>
+                  {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    Хүний нөөцийн менежерийн чиглэлээр бакалаврын зэрэгтэй байх
+                  </p> */}
+                  <ul className="mb-10 list-inside list-disc text-body-color">
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Хүний нөөцийн менежмент, хөдөлмөрийн эрх зүй болон хүний
+                      нөөцийн стратегийн талаар мэдлэгтэй байх
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Хүний нөөцийн менежмент, хөдөлмөрийн эрх зүй болон хүний
+                      нөөцийн стратегийн талаар мэдлэгтэй байх
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Хүний нөөцийн менежмент, хөдөлмөрийн эрх зүй болон хүний
+                      нөөцийн стратегийн талаар мэдлэгтэй байх
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Хүний нөөцийн менежмент, хөдөлмөрийн эрх зүй болон хүний
+                      нөөцийн стратегийн талаар мэдлэгтэй байх
+                    </li>
+
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Ажилтны харилцаа, сургалт, хөгжлийн чиглэлээр туршлагатай
+                      байх
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Харилцан ойлголцол, багаар ажиллах, шийдвэр гаргах
+                      чадвартай байх
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Бүтээлч, шийдэл гаргах чадвартай, хариуцлагатай хандах
+                    </li>
+                  </ul>
+                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                    Нэмэлт мэдээлэл{" "}
+                  </h3>
+                  {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    Хүний нөөцийн менежерийн чиглэлээр бакалаврын зэрэгтэй байх
+                  </p> */}
+                  <ul className="mb-10 list-inside list-disc text-body-color">
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Групп компаний хөнгөлөлт урамшуулал
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Менежментийн багийн үр дүнгийн урамшуулал
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      Эрүүл мэндийн даатгал -Удирдах ажилтны нэмэлт хангамж
+                    </li>
+                  </ul>
+                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                    Бусад{" "}
+                  </h3>
+                  {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    Хүний нөөцийн менежерийн чиглэлээр бакалаврын зэрэгтэй байх
+                  </p> */}
+                  <ul className="mb-10 list-inside list-disc text-body-color">
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      <span className="font-bold text-black dark:text-white">
+                        Байршил:
+                      </span>{" "}
+                      Улаанбаатар хот, Баянзүрх дүүрэг
+                    </li>
+                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
+                      <span className="font-bold text-black dark:text-white">
+                        Төрөл:
+                      </span>{" "}
+                      Бүтэн цагийн
+                    </li>
+                  </ul>
+
+                  {/* <p className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua. Quis enim lobortis scelerisque fermentum. Neque
@@ -138,29 +225,13 @@ const BlogDetailsPage = () => {
                     donec enim diam. Varius sit amet mattis vulputate enim nulla
                     aliquet porttitor. Odio pellentesque diam volutpat commodo
                     sed.
-                  </p>
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
-                    Digital marketplace for Ui/Ux designers.
-                  </h3>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    consectetur adipiscing elit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                    mattis vulputate cupidatat.
-                  </p>
-                  <ul className="mb-10 list-inside list-disc text-body-color">
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Consectetur adipiscing elit in voluptate velit.
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Mattis vulputate cupidatat.
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Vulputate enim nulla aliquet porttitor odio pellentesque
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Ligula ullamcorper malesuada proin
-                    </li>
-                  </ul>
+                  </p> */}
+                  <Link
+                    href="/"
+                    className="my-4 rounded-md bg-primary px-8 py-3 text-base font-bold text-white shadow-signUp duration-300 hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
+                  >
+                    CV илгээх{" "}
+                  </Link>
                   <div className="relative z-10 mb-10 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
                     <p className="text-center text-base font-medium italic text-body-color">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
