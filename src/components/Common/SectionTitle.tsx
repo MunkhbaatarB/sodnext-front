@@ -3,12 +3,12 @@ import { ReactNode } from "react";
 const SectionTitle = ({
   title,
   paragraph,
-  width = "570px",
+  width = "700px", // Өргөн томруулсан
   center,
   mb = "100px",
 }: {
   title: string;
-  paragraph: ReactNode; // Change string to ReactNode
+  paragraph: ReactNode;
   width?: string;
   center?: boolean;
   mb?: string;
@@ -21,7 +21,9 @@ const SectionTitle = ({
       <h2 className="mb-4 text-3xl font-bold !leading-tight text-black dark:text-white sm:text-4xl md:text-[45px]">
         {title}
       </h2>
-      <p className="text-base !leading-relaxed text-body-color md:text-lg">
+      <p
+        className={`text-base !leading-relaxed text-body-color dark:text-white/70 md:text-lg ${center ? "text-center" : "text-justify"}`}
+      >
         {paragraph}
       </p>
     </div>

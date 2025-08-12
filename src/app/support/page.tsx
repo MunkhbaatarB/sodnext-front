@@ -3,6 +3,7 @@ import AboutSectionTwo from "@/components/About/AboutSectionTwo";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import AboutSectionThree from "@/components/About/AboutSectionThree";
 import SupportSection from "@/components/Support";
+import ServicesCircleGrid from "@/components/Support/Services";
 
 import { Metadata } from "next";
 
@@ -18,6 +19,7 @@ const SupportPage = () => {
     <>
       <Breadcrumb pageName="Support" description="Бид Ажлын цагаар" />
       <SupportSection />
+      <ServicesCircleGrid />
     </>
   );
 };

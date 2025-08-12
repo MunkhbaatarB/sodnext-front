@@ -1,32 +1,131 @@
-import Image from "next/image";
+"use client";
 
-const SupportSection = () => {
-  const checkIcon = (
-    <svg width="16" height="13" viewBox="0 0 16 13" className="fill-current">
-      <path d="M5.8535 12.6631C5.65824 12.8584 5.34166 12.8584 5.1464 12.6631L0.678505 8.1952C0.483242 7.99994 0.483242 7.68336 0.678505 7.4881L2.32921 5.83739C2.52467 5.64193 2.84166 5.64216 3.03684 5.83791L5.14622 7.95354C5.34147 8.14936 5.65859 8.14952 5.85403 7.95388L13.3797 0.420561C13.575 0.22513 13.8917 0.225051 14.087 0.420383L15.7381 2.07143C15.9333 2.26669 15.9333 2.58327 15.7381 2.77854L5.8535 12.6631Z" />
-    </svg>
-  );
-  const List = ({ text, title }) => (
-    <div className="mb-5 flex items-start">
-      <div className="mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md bg-opacity-10 text-primary">
-        {checkIcon}
-      </div>
-      <div>
-        <h4 className="mb-1 text-lg font-medium text-black/90 dark:text-white/80">
-          {title}
-        </h4>
-        <p className="text-sm text-body-color">{text}</p>
-      </div>
-    </div>
-  );
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Keyboard } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-  return (
-    <section className="py-16 md:py-20 lg:py-28">
-      <div className="container">
-        <h1>this is support</h1>
-      </div>
-    </section>
-  );
+const imageData = {
+  camera: [
+    "https://media1.thrillophilia.com/filestore/n2ib9inwzcilxpg3aumbigvq4jus_IMG_World_Dubai_Fun_38a0986c1a.jpg?w=400&dpr=2",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTONvusf0zDT91WJPM7D6rR8ZV0S5gVwCb0XQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjPClvk1Eno3Y5JOM_7muvEOs7gVhaO4Nim0OQNvIaex8fGiKKQWnK7F2aEE4yUiz0-PM&usqp=CAU",
+  ],
+  network: [
+    "/images/network1.jpg",
+    "/images/network2.jpg",
+    "/images/network3.jpg",
+  ],
+  device: ["/images/device1.jpg", "/images/device2.jpg", "/images/device3.jpg"],
 };
 
-export default SupportSection;
+export default function SupportSection() {
+  const [active, setActive] = useState<"camera" | "network" | "device">(
+    "camera",
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = imageData[active];
+
+  const openModal = (index: number) => {
+    setCurrentIndex(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  return (
+    <section className="relative py-16 md:py-20 lg:py-28">
+      <div className="container mx-auto px-4">
+        {/* Гарчиг */}
+        <h2 className="text-md mb-8 text-center font-bold text-dark dark:text-white md:text-xl">
+          ХИЙЖ ГҮЙЦЭТГЭСЭН ТОМООХОН АЖЛУУД
+        </h2>
+
+        {/* Товчлуурууд */}
+        <div className="mb-10 flex justify-center gap-4">
+          {(["camera", "network", "device"] as const).map((type) => (
+            <button
+              key={type}
+              onClick={() => setActive(type)}
+              className={`rounded border px-4 py-2 transition ${
+                active === type
+                  ? "bg-sky-400 text-white"
+                  : "border-sky-500  text-dark hover:bg-blue-100 dark:text-white"
+              }`}
+            >
+              {type === "camera"
+                ? "Камерын шийдэл"
+                : type === "network"
+                  ? "Сүлжээний шийдэл"
+                  : "Тоног төхөөрөмж"}
+            </button>
+          ))}
+        </div>
+
+        {/* Gallery */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+          {images.map((img, index) => (
+            <div
+              key={index}
+              className="cursor-pointer overflow-hidden rounded shadow"
+            >
+              <img
+                src={img}
+                alt={`Gallery ${index}`}
+                className="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
+                onClick={() => openModal(index)}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal */}
+      {modalOpen && (
+        <div
+          onClick={closeModal}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+        >
+          <div
+            className="relative w-full max-w-5xl px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute right-4 top-4 z-50 text-3xl font-bold text-white hover:text-gray-300"
+            >
+              &times;
+            </button>
+
+            {/* Swiper */}
+            <Swiper
+              modules={[Navigation, Pagination, Keyboard]}
+              navigation
+              pagination={{ clickable: true }}
+              keyboard
+              initialSlide={currentIndex}
+              className="rounded-lg"
+            >
+              {images.map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <img
+                    src={img}
+                    alt={`Slide ${idx}`}
+                    className="mx-auto h-auto max-h-[80vh] w-full rounded-lg object-contain shadow-lg"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

@@ -2,8 +2,10 @@ import AboutSectionOne from "@/components/About/AboutSectionOne";
 import AboutSectionTwo from "@/components/About/AboutSectionTwo";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import AboutSectionThree from "@/components/About/AboutSectionThree";
+import SoftwareSectionThree from "@/components/Software/SoftwareSectionThree";
 
 import { Metadata } from "next";
+import SoftwareSectionOne from "@/components/Software/SoftwareSectionOne";
 
 export const metadata: Metadata = {
   title: "Software | Sod electronics",
@@ -18,9 +20,9 @@ const SoftwarePage = () => {
         pageName="Software"
         description="Ямар ч төрлийн бизнес үйлчилгээ нь дижитал орчинд маркетинг борлуулалтын шинэ арга барил техникийг шаарддаг. Дижитал маркетингийн аливаа арга техникийг вэб сайтгүйгээр удирдан явуулах боломжгүй."
       />
-      <AboutSectionOne />
+      <SoftwareSectionOne />
       <AboutSectionTwo />
-      <AboutSectionThree />
+      <SoftwareSectionThree />
     </>
   );
 };
