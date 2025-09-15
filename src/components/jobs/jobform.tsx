@@ -87,16 +87,6 @@ export default function JobForm({ job }: JobFormProps) {
       setError("Нэр зөвхөн монгол үсэг (2-50 тэмдэгт) байх ёстой.");
       return;
     }
-    const validateEmail = (email: string) => {
-      const emailRe = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-      if (!emailRe.test(email)) {
-        setError(
-          "Имэйл хаяг буруу байна. Зөвхөн латин үсэг, @ тэмдэгт болон domain-тэй байх ёстой.",
-        );
-        return false;
-      }
-      return true;
-    };
   };
 
   // upload file
@@ -328,18 +318,15 @@ export default function JobForm({ job }: JobFormProps) {
                         type="text"
                         value={name}
                         placeholder="Овог нэр"
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          const mongolianNameRe = /^[А-Яа-яЁё\s-]*$/; // *: бүх бичигдэж буй текстийг зөвшөөрөх
-                          if (mongolianNameRe.test(val)) {
-                            setName(val);
-                            setError("");
-                          } else {
-                            setError("Зөвхөн монгол үсэг бичнэ үү.");
-                          }
-                        }}
-                        className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        onChange={(e) => setName(e.target.value)}
                         required
+                        onInvalid={(e) =>
+                          e.currentTarget.setCustomValidity(
+                            "Энэ талбарыг бөглөнө үү",
+                          )
+                        }
+                        onInput={(e) => e.currentTarget.setCustomValidity("")}
+                        className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
 
@@ -352,11 +339,17 @@ export default function JobForm({ job }: JobFormProps) {
                           placeholder="Имэйл хаяг"
                           onChange={(e) => setEmail(e.target.value)}
                           required
+                          onInvalid={(e) =>
+                            e.currentTarget.setCustomValidity(
+                              "Энэ талбарыг бөглөнө үү",
+                            )
+                          }
+                          onInput={(e) => e.currentTarget.setCustomValidity("")}
                           className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                         />
-                        {error && (
+                        {/* {error && (
                           <p className="mt-1 text-sm text-red-500">{error}</p>
-                        )}
+                        )} */}
                       </div>
                     </div>
 
