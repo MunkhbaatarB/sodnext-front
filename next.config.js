@@ -1,12 +1,12 @@
-/** @type {import('next').NextConfig} */
+// next.config.js
 const nextConfig = {
   images: {
-    domains: ["localhost"],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-        port: "",
+        protocol: "http",
+        hostname: "194.163.170.83",
+
+        pathname: "/storage/**",
       },
     ],
   },

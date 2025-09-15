@@ -42,7 +42,7 @@ const Blog = () => {
             {Array.isArray(blogData) && blogData.length > 0 ? (
               blogData.map((blog) => (
                 <div key={blog.id} className="w-full">
-                  <SingleBlog blog={blog} />
+                  <SingleBlog />
                 </div>
               ))
             ) : (

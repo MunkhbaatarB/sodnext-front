@@ -12,6 +12,94 @@ interface JobFormProps {
 }
 
 export default function JobForm({ job }: JobFormProps) {
+  // upload file
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError("");
+    if (e.target.files && e.target.files[0]) {
+      const f = e.target.files[0];
+      const allowed = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      const maxSize = 5 * 1024 * 1024;
+
+      if (!allowed.includes(f.type)) {
+        setError("Зөвшөөрөгдсөн файл: PDF эсвэл Word (.doc, .docx)");
+        setFile(null);
+        return;
+      }
+      if (f.size > maxSize) {
+        setError("Файл 5MB-аас их байж болохгүй.");
+        setFile(null);
+        return;
+      }
+      setFile(f);
+    }
+  };
+
+  const onfileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!name || !email) {
+      setError("Нэр болон имэйл хаягаа бөглөнө үү!");
+      return;
+    }
+
+    if (!file) {
+      setError("Анкетын файл заавал хавсаргана уу!");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("file", file);
+
+      await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      setSuccess("Амжилттай илгээгдлээ!");
+      setShowConfetti(true);
+      setIsModalOpen(true);
+    } catch (err) {
+      setError("Илгээхэд алдаа гарлаа!");
+    } finally {
+      setLoading(false);
+    }
+    const mongolianNameRe = /^[А-Яа-яЁё\s-]{2,50}$/;
+
+    if (!mongolianNameRe.test(name)) {
+      setError("Нэр зөвхөн монгол үсэг (2-50 тэмдэгт) байх ёстой.");
+      return;
+    }
+    const validateEmail = (email: string) => {
+      const emailRe = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (!emailRe.test(email)) {
+        setError(
+          "Имэйл хаяг буруу байна. Зөвхөн латин үсэг, @ тэмдэгт болон domain-тэй байх ёстой.",
+        );
+        return false;
+      }
+      return true;
+    };
+  };
+
+  // upload file
   const { title, image, paragraph, author, tags, publishDate } = job;
   const { theme } = useTheme();
 
@@ -233,42 +321,83 @@ export default function JobForm({ job }: JobFormProps) {
                 </span>
 
                 <div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Овог нэр"
-                    className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Имэйл хаяг"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                    className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                  <input
-                    type="text"
-                    name="phone"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder="Утасны дугаар"
-                    required
-                    className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                  <input
-                    type="text"
-                    name="position"
-                    placeholder="Өргөдөл гаргаж буй албан тушаал"
-                    className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  />
-                  <textarea
+                  <form onSubmit={onfileSubmit} className="space-y-4">
+                    <div>
+                      {/* <label className="mb-1 block">Нэр</label> */}
+                      <input
+                        type="text"
+                        value={name}
+                        placeholder="Овог нэр"
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const mongolianNameRe = /^[А-Яа-яЁё\s-]*$/; // *: бүх бичигдэж буй текстийг зөвшөөрөх
+                          if (mongolianNameRe.test(val)) {
+                            setName(val);
+                            setError("");
+                          } else {
+                            setError("Зөвхөн монгол үсэг бичнэ үү.");
+                          }
+                        }}
+                        className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      {/* <label className="mb-1 block">И-мэйл</label> */}
+                      <div>
+                        <input
+                          type="email"
+                          value={email}
+                          placeholder="Имэйл хаяг"
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                        />
+                        {error && (
+                          <p className="mt-1 text-sm text-red-500">{error}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      {/* <label className="mb-1 block">Анкет файл</label> */}
+                      <input
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={onFileChange}
+                        className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+
+                      {file && (
+                        <p className="mt-1 text-sm">
+                          Сонгосон файл: <strong>{file.name}</strong>
+                        </p>
+                      )}
+                      {error && <p className="mt-2 text-red-600">{error}</p>}
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="my-4 rounded-md bg-primary px-8 py-3 text-base font-bold text-white shadow-signUp duration-300 hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
+                    >
+                      {loading ? "Илгээж байна..." : "Анкет илгээх"}
+                    </button>
+
+                    {success && (
+                      <p className="mt-2 text-green-600">{success}</p>
+                    )}
+                  </form>
+
+                  {/* <textarea
                     name="experience"
                     rows={4}
                     placeholder="Ажлын туршлага / Товч танилцуулга"
                     className="border-stroke mb-4 w-full resize-none rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                  ></textarea>
+                  ></textarea> */}
 
-                  <div className="mb-5 flex justify-center">
+                  {/* <div className="mb-5 flex justify-center">
                     <a
                       href="/"
                       onClick={handleClick}
@@ -276,7 +405,7 @@ export default function JobForm({ job }: JobFormProps) {
                     >
                       Анкет илгээх
                     </a>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Modal */}
@@ -293,7 +422,8 @@ export default function JobForm({ job }: JobFormProps) {
                         Амжилттай илгээлээ!
                       </h2>
                       <p className="mb-6 dark:text-white">
-                        Таны анкет амжилттай илгээгдлээ. Бид тантай холбогдоно.
+                        Таны анкет амжилттай илгээгдлээ. Бид тантай удахгүй
+                        холбогдоно.
                       </p>
                       <button
                         onClick={closeModal}
@@ -447,6 +577,7 @@ export default function JobForm({ job }: JobFormProps) {
             </div>
           </div>
         </div>
+        <div></div>
       </section>
     </>
   );
