@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
+import type { Blog } from "@/types/blog";
 import SectionTitle from "../Common/SectionTitle";
 import SingleBlog from "./SingleBlog";
+import { fetchBlogData } from "@/lib/fetchblogdata";
 
 const Blog = () => {
-  const [blogData, setBlogData] = useState([]);
+  const [blogData, setBlogData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBlogData = async () => {
+    const getBlogs = async () => {
       try {
-        const response = await fetch("https://sodtech.mn/sod-backend/api/menu");
-        const data = await response.json();
+        const data = await fetchBlogData();
         setBlogData(data);
       } catch (error) {
         console.error("Error fetching blog data:", error);
@@ -19,7 +20,7 @@ const Blog = () => {
       }
     };
 
-    fetchBlogData();
+    getBlogs();
   }, []);
 
   return (
@@ -37,12 +38,11 @@ const Blog = () => {
         {loading ? (
           <p>Loading blogs...</p>
         ) : (
-          // Conditional rendering to ensure `blogData` is an array
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:gap-x-8 xl:grid-cols-3">
             {Array.isArray(blogData) && blogData.length > 0 ? (
               blogData.map((blog) => (
                 <div key={blog.id} className="w-full">
-                  <SingleBlog />
+                  <SingleBlog blogId={blog.id} />
                 </div>
               ))
             ) : (
