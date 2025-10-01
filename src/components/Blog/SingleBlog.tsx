@@ -41,7 +41,7 @@ const SingleBlog: React.FC<{ blogId: number }> = ({ blogId }) => {
   return (
     <div className="group relative overflow-hidden rounded-sm bg-white shadow-one duration-300 hover:shadow-two dark:bg-dark dark:hover:shadow-gray-dark">
       <Link
-        href={`/blog/${blog.id}`}
+        href={`/blog-sidebar/${blog.id}`}
         className="relative block aspect-[37/22] w-full"
       >
         <span className="absolute right-6 top-6 z-20 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold capitalize text-white">
@@ -50,13 +50,12 @@ const SingleBlog: React.FC<{ blogId: number }> = ({ blogId }) => {
         <div className="relative aspect-[37/22] w-full">
           <Image
             src={
-              blog.thumbnail && blog.thumbnail.trim() !== ""
+              blog.thumbnail && blog.thumbnail.startsWith("http")
                 ? blog.thumbnail
-                : "/default.png"
+                : "/images/blog/blog-01.jpg"
             }
             alt={blog.title || "Blog thumbnail"}
             fill
-            sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover"
           />
         </div>
@@ -80,7 +79,7 @@ const SingleBlog: React.FC<{ blogId: number }> = ({ blogId }) => {
 
         <div className="flex items-center justify-between">
           <h4 className="text-sm font-medium text-dark dark:text-white">
-            {blog.author ? `By ${blog.author}` : "Зохиогч тодорхойгүй"}
+            {blog.author ? `Нийтэлсэн ${blog.author}` : " Тодорхойгүй"}
           </h4>
           <p className="text-xs text-body-color">
             {blog.created_at

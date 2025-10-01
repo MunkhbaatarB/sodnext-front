@@ -10,6 +10,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://worldmongolians.com/api/job-applications",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

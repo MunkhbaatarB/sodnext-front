@@ -1,8 +1,11 @@
 // lib/fetchblogdata.ts
-export async function fetchBlogData() {
-  const res = await fetch("https://sodtech.mn/sod-admin/public/api/news", {
-    cache: "no-store",
-  });
+export async function fetchJobApp() {
+  const res = await fetch(
+    "https://sodtech.mn/sod-admin/public/api/job-applications",
+    {
+      cache: "no-store",
+    },
+  );
 
   if (!res.ok) {
     const text = await res.text();

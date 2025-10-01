@@ -68,7 +68,7 @@ export default function ServicesSection() {
 
         <div className="relative">
           {/* Голд сонгогдсон service */}
-          {selected && (
+          {/* {selected && (
             <div className="absolute left-1/2 top-1/2 z-10 w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6 text-center shadow-lg transition-all duration-300 dark:bg-gray-800">
               <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full  text-white">
                 {services.find((s) => s.id === selected)?.icon}
@@ -80,7 +80,7 @@ export default function ServicesSection() {
                 {services.find((s) => s.id === selected)?.description}
               </p>
             </div>
-          )}
+          )} */}
 
           {/* Services Grid */}
           <div className="grid grid-cols-2 justify-center gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">

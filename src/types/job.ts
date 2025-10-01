@@ -12,4 +12,9 @@ export type Job = {
   author: Author;
   tags: string[];
   publishDate: string;
+  position: string;
+  location: string;
+
+  type: string;
+  content: string;
 };

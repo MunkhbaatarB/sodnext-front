@@ -1,6 +1,6 @@
 // lib/fetchblogdata.ts
-export async function fetchBlogData() {
-  const res = await fetch("https://sodtech.mn/sod-admin/public/api/news", {
+export async function fetchJobData() {
+  const res = await fetch("http://worldmongolians.com/api/jobs", {
     cache: "no-store",
   });
 

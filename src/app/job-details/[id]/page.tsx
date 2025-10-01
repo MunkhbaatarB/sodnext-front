@@ -41,16 +41,23 @@ const JobDetailsPage = async ({ params }: JobPageProps) => {
             <div className="w-full px-4 lg:w-8/12">
               <div>
                 <div>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    Даянсофт ХХК нь 2015 оноос хойш 10+ жил тогтвортойгоор
-                    өөрсдийн дотоод ERP систем хөгжүүлэлт, нэвтрүүлэлтийг хийж
-                    байгаа програм хангамжийн компани бөгөөд дотроо Борлуулалт,
-                    Хөгжүүлэлт, Борлуулалтын дараах support үйлчилгээ гэсэн 3
-                    үндсэн багт хуваагдан ажилладаг. Хэрэв та бидэнтэй нэгдэж
-                    өдөр тутамд шинэ сорилт, боломжуудтай нүүр тулан хамтдаа өсч
-                    дэвжихийг хүсвэл дараах нээлттэй ажлын байрууд болон өөр
-                    албан тушаалд ч хөрвөн ажиллах боломжтой.
-                  </p>
+                  {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    Манай компани анх 2013 оноос мэдээлэл технологийн салбарт
+                    гадаад худалдаа, компьютерийн засвар, түүний дагалдах
+                    төхөөрөмж борлуулалтын чиглэлээр үйл ажиллагаагаа явуулж
+                    эхэлсэн 100 хувь дотоодын хөрөнгө оруулалттай компани юм.
+                    Бид бүхэн өндөр мэдлэг, ур чадвар, бүтээлч сэтгэлгээ, шинэ
+                    технологийг эх орондоо нэвтрүүлэхийн зэрэгцээ, захиалагч
+                    болон харилцагчийнхаа нэр хүнд, эрх ашгийг тэргүүн эгнээнд
+                    тавьж, урт хугацааны найрсаг найдвартай хамтын ажиллагааг
+                    эрхэмлэн, чанарын өндөр түвшинд хийж гүйцэтгэхийн ямагт
+                    эрмэлзэж ажилладаг. Манай компани нь дэлхийд нэр хүндтэй
+                    албан ёсны Canon, Dell, Kaspersky, Konica Minolta, APC,
+                    Solarwinds, Oracle-ийн албан ёсны гэрээт борлуулагч бөгөөд
+                    чанартай сервис үйлчилгээний хамтаар дэвшилтэд технологийг
+                    хэрэглэгчидэд цаг алдалгүй хүргэхийг зорилт болгон ажиллаж
+                    байна.
+                  </p> */}
                   {/* <div className="mb-10 w-full overflow-hidden rounded">
                     <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
                       <Image
@@ -61,30 +68,31 @@ const JobDetailsPage = async ({ params }: JobPageProps) => {
                       />
                     </div>
                   </div> */}
-                  <h2 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-                    Тооцооны нягтлан бодогч
+                  <h2 className="mb-4 text-xl font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight">
+                    {job.position}
                   </h2>
-                  <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10"></div>
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
-                    Гүйцэтгэх үндсэн үүрэг{" "}
-                  </h3>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    Үйлдвэрийн өдөр тутмын үйл ажиллагааг төлөвлөх, зохион
-                    байгуулах, хяналт тавих Үйлдвэрлэлийн төлөвлөгөө, норм
-                    нормчилол, чанар стандартын хэрэгжилтийг хангах Хөдөлмөр
-                    аюулгүй байдал, эрүүл ахуйн шаардлагыг мөрдүүлж ажиллах
-                    Бүтээмжийг нэмэгдүүлэх, зардлыг хянах, үр ашигтай үйл
-                    ажиллагааг бий болгох Ажилтнуудыг удирдан чиглүүлэх, сургалт
-                    хөгжилд анхаарах
+                  <p className=" text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    {" "}
+                    {job.type}
                   </p>
-
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                  <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10"></div>
+                  {/* <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                    Гүйцэтгэх үндсэн үүрэг{" "}
+                  </h3> */}
+                  {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
+                    {job.content}
+                  </p> */}
+                  <div
+                    className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: job.content }}
+                  />
+                  {/* <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
                     Ажлын байранд тавигдах шаардлага
-                  </h3>
+                  </h3> */}
                   {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     Хүний нөөцийн менежерийн чиглэлээр бакалаврын зэрэгтэй байх
                   </p> */}
-                  <ul className="mb-10 list-inside list-disc text-body-color">
+                  {/* <ul className="mb-10 list-inside list-disc text-body-color">
                     <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
                       Хүний нөөцийн менежмент, хөдөлмөрийн эрх зүй болон хүний
                       нөөцийн стратегийн талаар мэдлэгтэй байх
@@ -113,14 +121,14 @@ const JobDetailsPage = async ({ params }: JobPageProps) => {
                     <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
                       Бүтээлч, шийдэл гаргах чадвартай, хариуцлагатай хандах
                     </li>
-                  </ul>
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                  </ul> */}
+                  {/* <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
                     Нэмэлт мэдээлэл{" "}
-                  </h3>
+                  </h3> */}
                   {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     Хүний нөөцийн менежерийн чиглэлээр бакалаврын зэрэгтэй байх
                   </p> */}
-                  <ul className="mb-10 list-inside list-disc text-body-color">
+                  {/* <ul className="mb-10 list-inside list-disc text-body-color">
                     <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
                       Групп компаний хөнгөлөлт урамшуулал
                     </li>
@@ -130,14 +138,14 @@ const JobDetailsPage = async ({ params }: JobPageProps) => {
                     <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
                       Эрүүл мэндийн даатгал -Удирдах ажилтны нэмэлт хангамж
                     </li>
-                  </ul>
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
+                  </ul> */}
+                  {/* <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
                     Бусад{" "}
-                  </h3>
+                  </h3> */}
                   {/* <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
                     Хүний нөөцийн менежерийн чиглэлээр бакалаврын зэрэгтэй байх
                   </p> */}
-                  <ul className="mb-10 list-inside list-disc text-body-color">
+                  {/* <ul className="mb-10 list-inside list-disc text-body-color">
                     <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
                       <span className="font-bold text-black dark:text-white">
                         Байршил:
@@ -150,7 +158,7 @@ const JobDetailsPage = async ({ params }: JobPageProps) => {
                       </span>{" "}
                       Бүтэн цагийн
                     </li>
-                  </ul>
+                  </ul> */}
 
                   <div className="relative z-10 mb-10 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
                     <p className="text-center text-base font-medium italic text-body-color">

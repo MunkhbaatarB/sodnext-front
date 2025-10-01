@@ -35,37 +35,38 @@ const benefits = [
 export default function AboutSectionBenefits() {
   return (
     <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-20 lg:py-28">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {benefits.map((item, index) => {
-            const IconComponent = icons[index];
-            return (
-              <motion.div
-                key={index}
-                className="overflow-hidden rounded-2xl bg-white shadow-lg dark:bg-gray-800"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 2, delay: index * 0.1 }}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
-                }}
-              >
-                <div className="flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-500 p-6">
-                  <IconComponent className="text-5xl text-white" />
-                </div>
-                <div className="p-6 text-center">
-                  <h3 className="mb-2 text-xl font-semibold text-gray-800 dark:text-white">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                    {item.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+      <div className="container">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          {benefits.map((benefit, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-[#121723]"
+            >
+              {/* Icon */}
+              <div className="mb-6 flex h-[60px] w-[60px] items-center justify-center">
+                <svg
+                  fill="currentColor"
+                  className="text-primary dark:text-white"
+                  height="35px"
+                  width="35px"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M505.616,238.008c-1.079-1.279-26.946-31.695-70.603-62.481C394.538,146.983,330.624,112.958,256,112.958 ..."></path>
+                </svg>
+              </div>
+
+              {/* Title */}
+              <h3 className="mb-3 text-lg font-bold text-black dark:text-white">
+                {benefit.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                {benefit.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

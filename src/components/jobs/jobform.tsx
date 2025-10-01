@@ -68,10 +68,13 @@ export default function JobForm({ job }: JobFormProps) {
       formData.append("email", email);
       formData.append("file", file);
 
-      await fetch("/api/upload", {
+      await fetch("http://worldmongolians.com/api/job-applications", {
         method: "POST",
-        body: formData,
       });
+      // await fetch("http://worldmongolians.com/api/job-applications", {
+      //   method: "GET",
+      //   credentials: "include",
+      // });
 
       setSuccess("Амжилттай илгээгдлээ!");
       setShowConfetti(true);
