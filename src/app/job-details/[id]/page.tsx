@@ -7,9 +7,9 @@ import { Job } from "@/types/job";
 
 import { Metadata } from "next";
 interface JobPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 export const metadata: Metadata = {
   title: "Blog Details Page | Sod electronics",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 const JobDetailsPage = async ({ params }: JobPageProps) => {
-  const { id } = params;
+  const { id } = await params;
 
   let job: Job | undefined;
 
@@ -309,7 +309,7 @@ const JobDetailsPage = async ({ params }: JobPageProps) => {
                     </span>
                   </div>
                   <Link
-                    href="/job-form"
+                    href={`/job-form?position=${encodeURIComponent(job.position)}`}
                     className="my-4 rounded-md bg-primary px-8 py-3 text-base font-bold text-white shadow-signUp duration-300 hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
                   >
                     Анкет илгээх{" "}

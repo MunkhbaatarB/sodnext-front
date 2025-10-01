@@ -7,18 +7,36 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import Confetti from "react-confetti";
 
+// Fallback job positions if API fails
+const fallbackJobs = [
+  { id: 1, position: "Frontend Developer", type: "Бүтэн цагийн" },
+  { id: 2, position: "Backend Developer", type: "Бүтэн цагийн" },
+  { id: 3, position: "Full Stack Developer", type: "Бүтэн цагийн" },
+  { id: 4, position: "UI/UX Designer", type: "Бүтэн цагийн" },
+  { id: 5, position: "DevOps Engineer", type: "Бүтэн цагийн" },
+  { id: 6, position: "Mobile Developer", type: "Бүтэн цагийн" },
+  { id: 7, position: "Data Analyst", type: "Бүтэн цагийн" },
+  { id: 8, position: "Product Manager", type: "Бүтэн цагийн" },
+  { id: 9, position: "QA Engineer", type: "Бүтэн цагийн" },
+  { id: 10, position: "System Administrator", type: "Бүтэн цагийн" },
+];
+
 interface JobFormProps {
   job: Job;
+  preSelectedPosition?: string | null;
 }
 
-export default function JobForm({ job }: JobFormProps) {
+export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
   // upload file
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [selectedPosition, setSelectedPosition] = useState(preSelectedPosition || "");
+  const [availableJobs, setAvailableJobs] = useState<any[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingJobs, setLoadingJobs] = useState(true);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
@@ -42,14 +60,35 @@ export default function JobForm({ job }: JobFormProps) {
         return;
       }
       setFile(f);
+      // Clear any previous error if file is valid
+      setError("");
     }
   };
 
   const onfileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Validate name - allow both Mongolian and English names
+    const nameRegex = /^[]{2,50}$/;
+    // if (!nameRegex.test(name)) {
+    //   setError("Нэр зөвхөн үсэг (монгол эсвэл англи), зай, зураас агуулж болно (2-50 тэмдэгт).");
+    //   return;
+    // }
+
     if (!name || !email) {
       setError("Нэр болон имэйл хаягаа бөглөнө үү!");
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Зөв имэйл хаяг оруулна уу!");
+      return;
+    }
+
+    if (!selectedPosition) {
+      setError("Ажлын байрыг сонгоно уу!");
       return;
     }
 
@@ -66,29 +105,35 @@ export default function JobForm({ job }: JobFormProps) {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("email", email);
+      formData.append("position", selectedPosition);
       formData.append("file", file);
 
-      await fetch("http://worldmongolians.com/api/job-applications", {
+      const response = await fetch("/api/job-applications", {
         method: "POST",
+        body: formData,
       });
-      // await fetch("http://worldmongolians.com/api/job-applications", {
-      //   method: "GET",
-      //   credentials: "include",
-      // });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
       setSuccess("Амжилттай илгээгдлээ!");
       setShowConfetti(true);
       setIsModalOpen(true);
+      
+      // Reset form
+      setName("");
+      setEmail("");
+      setSelectedPosition("");
+      setFile(null);
+      
     } catch (err) {
-      setError("Илгээхэд алдаа гарлаа!");
+      console.error('Fetch error:', err);
+      setError("Илгээхэд алдаа гарлаа! Та дахин оролдоно уу.");
     } finally {
       setLoading(false);
-    }
-    const mongolianNameRe = /^[А-Яа-яЁё\s-]{2,50}$/;
-
-    if (!mongolianNameRe.test(name)) {
-      setError("Нэр зөвхөн монгол үсэг (2-50 тэмдэгт) байх ёстой.");
-      return;
     }
   };
 
@@ -109,26 +154,77 @@ export default function JobForm({ job }: JobFormProps) {
 
   useEffect(() => {
     function updateSize() {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      if (typeof window !== 'undefined') {
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      }
     }
     updateSize();
 
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-  useEffect(() => {
-    const scrollY = window.scrollY;
-
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden"; // scroll disable
-    } else {
-      document.body.style.overflow = "";
-      window.scrollTo(0, scrollY); // position restore
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", updateSize);
+      return () => window.removeEventListener("resize", updateSize);
     }
+  }, []);
 
-    return () => {
-      document.body.style.overflow = "";
+  // Fetch available job positions
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoadingJobs(true);
+        
+        // Use internal API route to avoid CORS issues
+        const response = await fetch("/api/jobs", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data && data.data.length > 0) {
+            setAvailableJobs(data.data);
+          } else {
+            // Use fallback if API returns empty data
+            setAvailableJobs(fallbackJobs);
+          }
+        } else {
+          console.warn('API response not ok, using fallback jobs');
+          setAvailableJobs(fallbackJobs);
+        }
+      } catch (error) {
+        console.error("Failed to fetch jobs, using fallback:", error);
+        // Use fallback job positions if API fails
+        setAvailableJobs(fallbackJobs);
+      } finally {
+        setLoadingJobs(false);
+      }
     };
+
+    fetchJobs();
+  }, []);
+
+  // Update selected position when preSelectedPosition changes
+  useEffect(() => {
+    if (preSelectedPosition && !loadingJobs) {
+      setSelectedPosition(preSelectedPosition);
+    }
+  }, [preSelectedPosition, loadingJobs]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const scrollY = window.scrollY;
+
+      if (isModalOpen) {
+        document.body.style.overflow = "hidden"; // scroll disable
+      } else {
+        document.body.style.overflow = "";
+        window.scrollTo(0, scrollY); // position restore
+      }
+
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
   }, [isModalOpen]);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -321,7 +417,10 @@ export default function JobForm({ job }: JobFormProps) {
                         type="text"
                         value={name}
                         placeholder="Овог нэр"
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                          if (error) setError(""); // Clear error when user types
+                        }}
                         required
                         onInvalid={(e) =>
                           e.currentTarget.setCustomValidity(
@@ -340,7 +439,10 @@ export default function JobForm({ job }: JobFormProps) {
                           type="email"
                           value={email}
                           placeholder="Имэйл хаяг"
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            if (error) setError(""); // Clear error when user types
+                          }}
                           required
                           onInvalid={(e) =>
                             e.currentTarget.setCustomValidity(
@@ -355,20 +457,37 @@ export default function JobForm({ job }: JobFormProps) {
                         )} */}
                       </div>
                     </div>
-                    <input
-                      type="email"
-                      value={email}
-                      placeholder="Сонгогдсон ажлын байр"
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      onInvalid={(e) =>
-                        e.currentTarget.setCustomValidity(
-                          "Энэ талбарыг бөглөнө үү",
-                        )
-                      }
-                      onInput={(e) => e.currentTarget.setCustomValidity("")}
-                      className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
-                    />
+                    <div className="mb-4">
+                      <select
+                        value={selectedPosition}
+                        onChange={(e) => {
+                          setSelectedPosition(e.target.value);
+                          if (error) setError(""); // Clear error when user selects
+                        }}
+                        required
+                        onInvalid={(e) =>
+                          e.currentTarget.setCustomValidity(
+                            "Ажлын байрыг сонгоно үү",
+                          )
+                        }
+                        onInput={(e) => e.currentTarget.setCustomValidity("")}
+                        className="border-stroke mb-4 w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      >
+                        <option value="" disabled>
+                          {loadingJobs ? "Ачааллаж байна..." : "Ажлын байр сонгоно уу"}
+                        </option>
+                        {availableJobs.map((job) => (
+                          <option key={job.id} value={job.position}>
+                            {job.position}
+                          </option>
+                        ))}
+                        {!loadingJobs && availableJobs.length === 0 && (
+                          <option value="" disabled>
+                            Ажлын байр олдсонгүй
+                          </option>
+                        )}
+                      </select>
+                    </div>
 
                     <div>
                       {/* <label className="mb-1 block">Анкет файл</label> */}
@@ -380,24 +499,49 @@ export default function JobForm({ job }: JobFormProps) {
                       />
 
                       {file && (
-                        <p className="mt-1 text-sm">
+                        <p className="mt-1 text-sm text-green-600">
                           Сонгосон файл: <strong>{file.name}</strong>
                         </p>
                       )}
-                      {error && <p className="mt-2 text-red-600">{error}</p>}
                     </div>
+
+                    {error && (
+                      <div className="mb-4 rounded-md bg-red-50 p-4 dark:bg-red-900/20">
+                        <div className="flex">
+                          <div className="ml-3">
+                            <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+                              Алдаа гарлаа
+                            </h3>
+                            <div className="mt-2 text-sm text-red-700 dark:text-red-300">
+                              <p>{error}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {success && (
+                      <div className="mb-4 rounded-md bg-green-50 p-4 dark:bg-green-900/20">
+                        <div className="flex">
+                          <div className="ml-3">
+                            <h3 className="text-sm font-medium text-green-800 dark:text-green-200">
+                              Амжилттай
+                            </h3>
+                            <div className="mt-2 text-sm text-green-700 dark:text-green-300">
+                              <p>{success}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     <button
                       type="submit"
                       disabled={loading}
-                      className="my-4 rounded-md bg-primary px-8 py-3 text-base font-bold text-white shadow-signUp duration-300 hover:bg-white hover:text-primary md:px-9 lg:px-8 xl:px-9"
+                      className="my-4 rounded-md bg-primary px-8 py-3 text-base font-bold text-white shadow-signUp duration-300 hover:bg-white hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed md:px-9 lg:px-8 xl:px-9"
                     >
                       {loading ? "Илгээж байна..." : "Анкет илгээх"}
                     </button>
-
-                    {success && (
-                      <p className="mt-2 text-green-600">{success}</p>
-                    )}
                   </form>
 
                   {/* <textarea
