@@ -55,7 +55,7 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
         return;
       }
       if (f.size > maxSize) {
-        setError("Файл 5MB-аас их байж болохгүй.");
+        setError("Файл 5MB-аас их байж гүй.");
         setFile(null);
         return;
       }
