@@ -156,7 +156,7 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
       
     } catch (err) {
       console.error('Fetch error:', err);
-      setError("Илгээхэд ! Та дахин оролдоно уу.");
+      setError("Илгээхэд алдаа гарлаа! Та дахин оролдоно уу.");
     } finally {
       setLoading(false);
     }
