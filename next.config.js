@@ -10,14 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://worldmongolians.com/api/job-applications",
-      },
-    ];
-  },
+  // Remove broad rewrites to avoid clashing with Next.js App Router API routes
 };
 
 module.exports = nextConfig;

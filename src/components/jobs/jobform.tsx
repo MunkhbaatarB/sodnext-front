@@ -23,6 +23,7 @@ const fallbackJobs = [
 
 interface JobFormProps {
   job: Job;
+  // If provided via query (?position=Frontend%20Developer), we'll map it to an id after jobs load
   preSelectedPosition?: string | null;
 }
 
@@ -30,7 +31,8 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
   // upload file
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedPosition, setSelectedPosition] = useState(preSelectedPosition || "");
+  // Store the selected job by id (number or string for select). We'll map from name -> id when jobs load
+  const [selectedPosition, setSelectedPosition] = useState<string | number>("");
   const [availableJobs, setAvailableJobs] = useState<any[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
@@ -69,11 +71,11 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
     e.preventDefault();
 
     // Validate name - allow both Mongolian and English names
-    const nameRegex = /^[]{2,50}$/;
-    // if (!nameRegex.test(name)) {
-    //   setError("Нэр зөвхөн үсэг (монгол эсвэл англи), зай, зураас агуулж болно (2-50 тэмдэгт).");
-    //   return;
-    // }
+    const nameRegex = /^[\u0400-\u04FFa-zA-Z\s\-\.]{2,50}$/;
+    if (!nameRegex.test(name)) {
+      setError("Нэр зөвхөн үсэг (монгол эсвэл англи), зай, зураас агуулж болно (2-50 тэмдэгт).");
+      return;
+    }
 
     if (!name || !email) {
       setError("Нэр болон имэйл хаягаа бөглөнө үү!");
@@ -103,9 +105,25 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
 
     try {
       const formData = new FormData();
+      // Always send by job id if available
+      formData.append("job_id", String(selectedPosition));
+
+      // Also include a text position for servers expecting the name
+      const selectedJobName =
+        availableJobs.find((j) => String(j.id) === String(selectedPosition))?.position ||
+        (typeof preSelectedPosition === "string" ? preSelectedPosition : "");
+
+      // Send both legacy and new field names to maximize compatibility
+      formData.append("applicant_name", name);
+      formData.append("applicant_email", email);
+      
+      // The backend expects additional_files as an array, so append with array notation
+      formData.append("additional_files[]", file);
+
+      // Legacy/alternate keys used by some backends
       formData.append("name", name);
       formData.append("email", email);
-      formData.append("position", selectedPosition);
+      if (selectedJobName) formData.append("position", selectedJobName);
       formData.append("file", file);
 
       const response = await fetch("/api/job-applications", {
@@ -113,12 +131,19 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
         body: formData,
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Handle validation errors from backend
+        if (data.details && typeof data.details === 'object') {
+          const errorMessages = Object.values(data.details).flat().join(', ');
+          setError(`Validation error: ${errorMessages}`);
+        } else {
+          setError(data.message || `HTTP error! status: ${response.status}`);
+        }
+        return;
       }
 
-      const data = await response.json();
-      
       setSuccess("Амжилттай илгээгдлээ!");
       setShowConfetti(true);
       setIsModalOpen(true);
@@ -138,16 +163,7 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
   };
 
   // upload file
-  const { title, image, paragraph, author, tags, publishDate } = job;
   const { theme } = useTheme();
-
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    message: "",
-    file: null as File | null,
-  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -204,12 +220,23 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
     fetchJobs();
   }, []);
 
-  // Update selected position when preSelectedPosition changes
+  // Update selected position when preSelectedPosition (name) changes and jobs are loaded.
+  // We map the provided name to the corresponding job id for submission.
   useEffect(() => {
-    if (preSelectedPosition && !loadingJobs) {
-      setSelectedPosition(preSelectedPosition);
+    if (!loadingJobs) {
+      if (preSelectedPosition) {
+        const match = availableJobs.find(
+          (j) => (j.position || "").toLowerCase() === preSelectedPosition.toLowerCase(),
+        );
+        if (match) {
+          setSelectedPosition(match.id);
+          return;
+        }
+      }
+      // If nothing preselected, clear to default blank
+      setSelectedPosition("");
     }
-  }, [preSelectedPosition, loadingJobs]);
+  }, [preSelectedPosition, loadingJobs, availableJobs]);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const scrollY = window.scrollY;
@@ -238,25 +265,7 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
     setShowConfetti(false);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setFormData((prev) => ({ ...prev, file: e.target.files![0] }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submitted data:", formData);
-    alert("Анкет амжилттай илгээгдлээ!");
-    // API илгээх код
-  };
 
   return (
     <>
@@ -477,7 +486,7 @@ export default function JobForm({ job, preSelectedPosition }: JobFormProps) {
                           {loadingJobs ? "Ачааллаж байна..." : "Ажлын байр сонгоно уу"}
                         </option>
                         {availableJobs.map((job) => (
-                          <option key={job.id} value={job.position}>
+                          <option key={job.id} value={job.id}>
                             {job.position}
                           </option>
                         ))}
